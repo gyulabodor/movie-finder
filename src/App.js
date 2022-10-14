@@ -1,5 +1,7 @@
+import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import './App.css';
+import MovieList from './components/MovieList/MovieList';
 import { SearchForm } from './components/SearchField/SearchForm';
 
 export default function App() {
@@ -9,20 +11,15 @@ export default function App() {
     document.title = "Movie Finder";
   })
 
-
-  const handleClick = (movies) => {
+  const handleSearchClick = (movies) => {
     setMovies(movies);
   }
-//
+
   return (
     <div className="App">
-      <h1>Movie Finder</h1>
-      <SearchForm handleClick={handleClick}/>
-      { 
-      
-        movies.length > 0 ? movies.map(({id, title}) =>(
-        <li key={id}> Movie title: {title}</li> 
-      )) : <h2>No movies!</h2>}
+      <Typography variant='h'>Movie Finder</Typography>
+      <SearchForm handleClick={handleSearchClick}/>
+      <MovieList movies={movies}/>
     </div>
   );
 }

@@ -1,11 +1,10 @@
-export const movieListStyle = {
+export const accordionStyle ={
     backgroundColor: '#525e5e',
     borderRadius: '7px',
     color: '#ffff',
     alignItems: 'center',
     width: '420px'
 }
-
 export const avatarStyle = {
     backgroundColor: '#e69429',
     height: '100px',

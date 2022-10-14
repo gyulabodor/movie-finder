@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useState} from 'react'
 import { 
-  movieListStyle, 
   avatarStyle, 
   listItemTextStyle, 
   listTyphoBodyStyle, 
@@ -8,7 +7,8 @@ import {
   expandIconStyle,
   summaryBodyStyle,
   linkStyle,
-  linkStackStyle
+  linkStackStyle,
+  accordionStyle
 } from './style.js'
 import { 
   Accordion,
@@ -16,7 +16,6 @@ import {
   AccordionDetails,
   Avatar, 
   Box, 
-  List, 
   ListItem, 
   ListItemAvatar, 
   ListItemIcon, 
@@ -30,13 +29,16 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Stack } from '@mui/system';
 
 
-export default function Movie({id,title,overview,score,releaseDate,img}) {
+export default function MovieListItem({id,title,score,releaseDate,img}) {
 
+  const [overview,setOverview] = useState("")
+  const [wikiLink,setWikiLink] = useState("")
+  const [imdbLink,setImdbLink] = useState("")
 
   return (
-    <Box>
-      <List>
-        <Accordion sx={movieListStyle}>
+    <ListItem>
+      <Box>
+        <Accordion sx={accordionStyle}>
           <AccordionSummary 
             id={`${id}-panel`}
             aria-controls={`${id}-header`}
@@ -44,7 +46,6 @@ export default function Movie({id,title,overview,score,releaseDate,img}) {
               <ExpandMoreIcon sx={expandIconStyle}/>
             }
           >
-            <ListItem>
             <ListItemIcon>
               <ListItemAvatar>
                 <Avatar 
@@ -76,7 +77,7 @@ export default function Movie({id,title,overview,score,releaseDate,img}) {
               }
               sx={listItemTextStyle}  
             />
-          </ListItem>
+          
           </AccordionSummary>
           <AccordionDetails>
               <Typography
@@ -104,7 +105,7 @@ export default function Movie({id,title,overview,score,releaseDate,img}) {
               </Stack>
           </AccordionDetails>
         </Accordion>
-      </List>
-    </Box>
+      </Box>
+    </ListItem>
   )
 }
