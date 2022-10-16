@@ -10,10 +10,12 @@ export default function MovieList({movies}) {
     return (
         <List sx={movieListStyle}>
             { 
-                movies.length > 0 ? movies.map(({id,title,score,releaseDate,img}) =>( 
+                movies.length > 0 ? movies.map(({id,name,score,releaseDate,img}) =>( 
+
                 <MovieListItem
+                    key={id}
                     id={id}
-                    title={title}
+                    name={name}
                     score={score}
                     releaseDate={releaseDate}
                     img={img}

@@ -17,7 +17,7 @@ export default function App() {
 
   return (
     <div className="App">
-      <Typography variant='h'>Movie Finder</Typography>
+      <Typography variant='h4'>Movie Finder</Typography>
       <SearchForm handleClick={handleSearchClick}/>
       <MovieList movies={movies}/>
     </div>

@@ -1,0 +1,1 @@
+export const tmdb_url = process.env.REACT_APP_TMDB_URL

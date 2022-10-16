@@ -3,7 +3,7 @@ export const accordionStyle ={
     borderRadius: '7px',
     color: '#ffff',
     alignItems: 'center',
-    width: '420px'
+    width: '420px',
 }
 export const avatarStyle = {
     backgroundColor: '#e69429',
@@ -15,7 +15,7 @@ export const listItemTextStyle = {
     padding: '8px',
 }
 export const listTyphoBodyStyle = {
-    color: '#ffff'
+    color: '#ffff',
 }
 export const movieTitleStyle = {
     fontSize: '20px',

@@ -1,4 +1,4 @@
-import React, { useState} from 'react'
+import React, { useEffect, useState} from 'react'
 import { 
   avatarStyle, 
   listItemTextStyle, 
@@ -25,18 +25,30 @@ import {
   Button,
   Divider
 } from '@mui/material'
+import { DateTime } from 'luxon'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Stack } from '@mui/system';
 
 
-export default function MovieListItem({id,title,score,releaseDate,img}) {
+export default function MovieListItem({id,name,score,releaseDate,img}) {
 
   const [overview,setOverview] = useState("")
   const [wikiLink,setWikiLink] = useState("")
   const [imdbLink,setImdbLink] = useState("")
 
+
+
+  const validateImg = () => {
+
+    if(img !== null){
+      return img.url
+    }
+    return img
+  }
+
+
   return (
-    <ListItem>
+    <ListItem key={id}>
       <Box>
         <Accordion sx={accordionStyle}>
           <AccordionSummary 
@@ -50,7 +62,7 @@ export default function MovieListItem({id,title,score,releaseDate,img}) {
               <ListItemAvatar>
                 <Avatar 
                   variant='rounded'
-                  src={img} 
+                  src={validateImg()} 
                   sx={avatarStyle}
                 />
               </ListItemAvatar>
@@ -58,7 +70,7 @@ export default function MovieListItem({id,title,score,releaseDate,img}) {
             <ListItemText 
               primary={
                 <>
-                  <Typography sx={movieTitleStyle}>{title}</Typography>
+                  <Typography sx={movieTitleStyle}>{name}</Typography>
                 </>
               }
               secondary={
@@ -71,7 +83,10 @@ export default function MovieListItem({id,title,score,releaseDate,img}) {
                   <Typography 
                     sx={listTyphoBodyStyle} 
                     variant='body2'>
-                      Release: {releaseDate}
+                      Release: {
+                        DateTime.fromISO(releaseDate).toFormat(
+                        "MMMM dd, yyyy"
+                      )}
                   </Typography>
                 </>
               }
