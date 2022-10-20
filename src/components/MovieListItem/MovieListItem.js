@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react'
+import React, { useState } from 'react'
 import { 
   avatarStyle, 
   listItemTextStyle, 
@@ -28,14 +28,13 @@ import {
 import { DateTime } from 'luxon'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Stack } from '@mui/system';
-
-
+import { wiki_article_url } from '../../configuration/env.js';
+import { fetchWikipedia } from '../../requests/fetchWikipedia.js';
 export default function MovieListItem({id,name,score,releaseDate,img}) {
 
   const [overview,setOverview] = useState("")
   const [wikiLink,setWikiLink] = useState("")
   const [imdbLink,setImdbLink] = useState("")
-
 
 
   const validateImg = () => {
@@ -46,9 +45,25 @@ export default function MovieListItem({id,name,score,releaseDate,img}) {
     return img
   }
 
+  const handleExtendListItem = async () =>{
+
+    const page = await fetchWikipedia(name);
+    console.log(page);
+    const pageId = Object.keys(page)[0]
+
+
+    if (pageId !== -1) {
+      setOverview(page[`${pageId}`].extract)
+      setWikiLink(`${wiki_article_url}=${pageId}`)
+    }else{
+      setOverview("Overview is missing from Wikipedia!")
+    }
+
+
+  }
 
   return (
-    <ListItem key={id}>
+    <ListItem onClick={handleExtendListItem} key={id}>
       <Box>
         <Accordion sx={accordionStyle}>
           <AccordionSummary 
@@ -108,7 +123,13 @@ export default function MovieListItem({id,name,score,releaseDate,img}) {
                 divider={<Divider orientation="vertical" flexItem />}
                 sx={linkStackStyle}
               >
-                  <Link sx={linkStyle}>Wikipedia</Link>
+                  <Link
+                    target="_blank"
+                    underline='none'
+                    rel="noopener"
+                    href={wikiLink} 
+                    sx={linkStyle}>Wikipedia
+                  </Link>
                   <Link sx={linkStyle}>IMDB</Link>
                   <Button 
                     variant='contained'

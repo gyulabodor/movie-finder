@@ -28,7 +28,7 @@ export const summaryBodyStyle = {
     textAlign: 'justify'
 }
 export const linkStyle = {
-    color: '#95bae8'
+    color: '#95bae8',
 }
 export const linkStackStyle = {
     padding: '5px'

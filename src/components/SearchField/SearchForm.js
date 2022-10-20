@@ -15,8 +15,8 @@ export const SearchForm = ({handleClick}) => {
         
         const resultArray = await fetchTMDBSearchMovie(searchTitle);
         const movies = resultArray.data.searchMovies
-        console.log(movies)
         handleClick(movies)
+        setSearchTitle("")
     }
 
     return(
