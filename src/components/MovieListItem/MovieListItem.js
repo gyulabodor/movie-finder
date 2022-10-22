@@ -28,13 +28,17 @@ import {
 import { DateTime } from 'luxon'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Stack } from '@mui/system';
-import { wiki_article_url } from '../../configuration/env.js';
+import { imdb_url, wiki_article_url } from '../../configuration/env.js';
 import { fetchWikipedia } from '../../requests/fetchWikipedia.js';
+import { fetchIMDB } from '../../requests/fetchIMDB.js';
+
 export default function MovieListItem({id,name,score,releaseDate,img}) {
 
-  const [overview,setOverview] = useState("")
-  const [wikiLink,setWikiLink] = useState("")
-  const [imdbLink,setImdbLink] = useState("")
+  const [overview,setOverview] = useState("");
+  const [wikiLink,setWikiLink] = useState("");
+  const [hasWiki,setHasWiki] = useState(false);
+  const [hasImdb,setHasImdb] = useState(false);
+  const [imdbLink,setImdbLink] = useState("");
 
 
   const validateImg = () => {
@@ -45,20 +49,31 @@ export default function MovieListItem({id,name,score,releaseDate,img}) {
     return img
   }
 
-  const handleExtendListItem = async () =>{
-
+  const setWikiResult = async () => {
     const page = await fetchWikipedia(name);
-    console.log(page);
     const pageId = Object.keys(page)[0]
-
 
     if (pageId !== -1) {
       setOverview(page[`${pageId}`].extract)
       setWikiLink(`${wiki_article_url}=${pageId}`)
-    }else{
-      setOverview("Overview is missing from Wikipedia!")
+      setHasWiki(true)
     }
+  }
 
+  const setIMDBResult = async () => {
+    const imdbResults = await fetchIMDB(name);
+    
+    if('results' in imdbResults){
+      const imdbId = imdbResults.results[0].id;
+      console.log(imdbId)
+      setImdbLink(`${imdb_url}${imdbId}`);
+      setHasImdb(true);
+    }
+  }
+
+  const handleExtendListItem = async () =>{
+    setWikiResult();
+    setIMDBResult();
 
   }
 
@@ -122,15 +137,27 @@ export default function MovieListItem({id,name,score,releaseDate,img}) {
                 alignItems='center'
                 divider={<Divider orientation="vertical" flexItem />}
                 sx={linkStackStyle}
-              >
-                  <Link
+              >{ hasWiki ?  
+                <Link
+                  target="_blank"
+                  underline='none'
+                  rel="noopener"
+                  href={wikiLink} 
+                  sx={linkStyle}
+                >Wikipedia
+                </Link> : ""
+              }
+              {
+                hasImdb ? 
+                <Link
                     target="_blank"
                     underline='none'
                     rel="noopener"
-                    href={wikiLink} 
-                    sx={linkStyle}>Wikipedia
-                  </Link>
-                  <Link sx={linkStyle}>IMDB</Link>
+                    href={imdbLink} 
+                    sx={linkStyle}
+                >IMDB
+                </Link> : ""
+              } 
                   <Button 
                     variant='contained'
                     color='error'

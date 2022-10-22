@@ -7,7 +7,7 @@ export const fetchWikipedia = async (name) => {
         format: 'json',
         action: 'query',
         prop: 'extracts',
-        exchars: '200',
+        exchars: '350',
         titles: name,
         exintro: true,
         explaintext: true,
