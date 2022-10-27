@@ -39,7 +39,7 @@ export default function MovieListItem({id,name,score,releaseDate,img}) {
   const [hasWiki,setHasWiki] = useState(false);
   const [hasImdb,setHasImdb] = useState(false);
   const [imdbLink,setImdbLink] = useState("");
-
+  const [hasExtended, setHasExtended] = useState(false);
 
   const validateImg = () => {
 
@@ -65,16 +65,17 @@ export default function MovieListItem({id,name,score,releaseDate,img}) {
     
     if('results' in imdbResults){
       const imdbId = imdbResults.results[0].id;
-      console.log(imdbId)
       setImdbLink(`${imdb_url}${imdbId}`);
       setHasImdb(true);
     }
   }
 
   const handleExtendListItem = async () =>{
-    setWikiResult();
-    setIMDBResult();
-
+    if (!hasExtended) {
+      setWikiResult();
+      setIMDBResult();
+      setHasExtended(true)
+    }
   }
 
   return (
