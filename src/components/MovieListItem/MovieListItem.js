@@ -41,13 +41,21 @@ export default function MovieListItem({id,name,score,releaseDate,img}) {
   const [imdbLink,setImdbLink] = useState("");
   const [hasExtended, setHasExtended] = useState(false);
 
-  const validateImg = () => {
-
+  const validateImg = (img) => {
     if(img !== null){
-      return img.url
+      return img.url;
     }
-    return img
+    return process.env.PUBLIC_URL + "/no-img.png";
   }
+
+  const validateReleaseDate = (releaseDate) => {
+    if(releaseDate !== null){
+     return DateTime.fromISO(releaseDate).toFormat(
+        "MMMM dd, yyyy"
+      );
+    }
+    return "unknown";
+  } 
 
   const setWikiResult = async () => {
     const page = await fetchWikipedia(name);
@@ -93,7 +101,7 @@ export default function MovieListItem({id,name,score,releaseDate,img}) {
               <ListItemAvatar>
                 <Avatar 
                   variant='rounded'
-                  src={validateImg()} 
+                  src={validateImg(img)} 
                   sx={avatarStyle}
                 />
               </ListItemAvatar>
@@ -114,10 +122,7 @@ export default function MovieListItem({id,name,score,releaseDate,img}) {
                   <Typography 
                     sx={listTyphoBodyStyle} 
                     variant='body2'>
-                      Release: {
-                        DateTime.fromISO(releaseDate).toFormat(
-                        "MMMM dd, yyyy"
-                      )}
+                      Release: {validateReleaseDate(releaseDate)}
                   </Typography>
                 </>
               }
