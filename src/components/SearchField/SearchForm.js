@@ -1,22 +1,25 @@
 import { Button, TextField } from "@mui/material"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import LocationSearchingOutlinedIcon from '@mui/icons-material/LocationSearchingOutlined';
 import { Stack } from "@mui/system";
 import { fetchTMDBSearchMovie } from "../../requests/fetchTMDB";
-
+import { LoadingContext } from "../../utilities/Context";
 
 
 export const SearchForm = ({handleClick}) => {
     
     const [searchTitle,setSearchTitle] = useState("");
-    const [searchResults,setSearchResult] = useState("");    
+    const {setLoading} = useContext(LoadingContext);
 
     const submitSearch = async () => {
-        
-        const resultArray = await fetchTMDBSearchMovie(searchTitle);
-        const movies = resultArray.data.searchMovies
-        handleClick(movies)
-        setSearchTitle("")
+        if (searchTitle !== "") {
+            setLoading(true);
+            const resultArray = await fetchTMDBSearchMovie(searchTitle);
+            const movies = resultArray.data.searchMovies;
+            setLoading(false);
+            handleClick(movies);
+            setSearchTitle("");    
+        }
     }
 
     return(
@@ -27,6 +30,7 @@ export const SearchForm = ({handleClick}) => {
                 size="large"
                 color="error"
                 type="text"
+                value={searchTitle}
                 onChange={e => setSearchTitle(e.target.value)}
             />
                 
