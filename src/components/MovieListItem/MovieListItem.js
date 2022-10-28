@@ -31,6 +31,7 @@ import { Stack } from '@mui/system';
 import { imdb_url, wiki_article_url } from '../../configuration/env.js';
 import { fetchWikipedia } from '../../requests/fetchWikipedia.js';
 import { fetchIMDB } from '../../requests/fetchIMDB.js';
+import { getYear } from '../../utilities/getYear.js';
 
 export default function MovieListItem({id,name,score,releaseDate,img}) {
 
@@ -59,22 +60,33 @@ export default function MovieListItem({id,name,score,releaseDate,img}) {
 
   const setWikiResult = async () => {
     const page = await fetchWikipedia(name);
-    const pageId = Object.keys(page)[0]
-
-    if (pageId !== -1) {
-      setOverview(page[`${pageId}`].extract)
-      setWikiLink(`${wiki_article_url}=${pageId}`)
-      setHasWiki(true)
+    const pageId = Object.keys(page)[0];
+    
+    if (pageId !== "-1") {
+      setOverview(page[`${pageId}`].extract);
+      setWikiLink(`${wiki_article_url}=${pageId}`);
+      setHasWiki(true);
     }
+
   }
 
   const setIMDBResult = async () => {
     const imdbResults = await fetchIMDB(name);
-    
+   console.log(imdbResults)
     if('results' in imdbResults){
-      const imdbId = imdbResults.results[0].id;
-      setImdbLink(`${imdb_url}${imdbId}`);
-      setHasImdb(true);
+
+      let searchedYear = getYear(releaseDate);
+      let i = 0;
+      while (i < imdbResults.results.length && 
+        (imdbResults.results[i].title !== name || imdbResults.results[i].year !== searchedYear)) 
+        { i++; }
+      
+      let imdbId;
+      if(i < imdbResults.results.length){
+          imdbId = imdbResults.results[i].id;
+          setImdbLink(`${imdb_url}${imdbId}`);
+          setHasImdb(true);
+      } 
     }
   }
 
