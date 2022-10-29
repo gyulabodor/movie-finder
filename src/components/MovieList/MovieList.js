@@ -1,11 +1,15 @@
+import { WindowSharp } from '@mui/icons-material'
 import { List, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import React from 'react'
+import React, { useEffect } from 'react'
 import MovieListItem from '../MovieListItem/MovieListItem'
 import { movieListStyle, infoBoxStyle } from './style.js'
 
 export default function MovieList({movies}) {
 
+    useEffect(() => {
+        window.scrollTo(0,0);
+    })
 
     return (
         <List sx={movieListStyle}>
@@ -13,12 +17,12 @@ export default function MovieList({movies}) {
                 movies.length > 0 ? movies.map(({id,name,score,releaseDate,img}) =>( 
 
                 <MovieListItem
-                    key={id}
-                    id={id}
+                    movieID={id}
                     name={name}
                     score={score}
                     releaseDate={releaseDate}
                     img={img}
+                    key={id}
                 />
                 )) : 
                 <Box sx={infoBoxStyle}>
@@ -28,7 +32,6 @@ export default function MovieList({movies}) {
                      No movies found!
                     </Typography>    
                 </Box>
-                 
             }
         </List>
   )

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { 
   avatarStyle, 
   listItemTextStyle, 
@@ -32,8 +32,10 @@ import { imdb_url, wiki_article_url } from '../../configuration/env.js';
 import { fetchWikipedia } from '../../requests/fetchWikipedia.js';
 import { fetchIMDB } from '../../requests/fetchIMDB.js';
 import { getYear } from '../../utilities/getYear.js';
+import { LoadingContext, MovieListContext } from '../../utilities/Context.js';
+import { fetchTMDBDiscoverMovies, fetchTMDBGetActorByMovie } from '../../requests/fetchTMDB.js';
 
-export default function MovieListItem({id,name,score,releaseDate,img}) {
+export default function MovieListItem({movieID,name,score,releaseDate,img}) {
 
   const [overview,setOverview] = useState("");
   const [wikiLink,setWikiLink] = useState("");
@@ -41,6 +43,8 @@ export default function MovieListItem({id,name,score,releaseDate,img}) {
   const [hasImdb,setHasImdb] = useState(false);
   const [imdbLink,setImdbLink] = useState("");
   const [hasExtended, setHasExtended] = useState(false);
+  const {movies,setMovies} = useContext(MovieListContext);
+  const {loading,setLoading} = useContext(LoadingContext);
 
   const validateImg = (img) => {
     if(img !== null){
@@ -72,7 +76,6 @@ export default function MovieListItem({id,name,score,releaseDate,img}) {
 
   const setIMDBResult = async () => {
     const imdbResults = await fetchIMDB(name);
-   console.log(imdbResults)
     if('results' in imdbResults){
 
       let searchedYear = getYear(releaseDate);
@@ -90,7 +93,7 @@ export default function MovieListItem({id,name,score,releaseDate,img}) {
     }
   }
 
-  const handleExtendListItem = async () =>{
+  const handleExtendListItem = async () => {
     if (!hasExtended) {
       setWikiResult();
       setIMDBResult();
@@ -98,13 +101,36 @@ export default function MovieListItem({id,name,score,releaseDate,img}) {
     }
   }
 
+  const handleRelatedMoviesButton = async () => {
+
+      setLoading(true);
+    
+      const resultMovie= await fetchTMDBGetActorByMovie(movieID);
+      const actorID = resultMovie.data.movie.cast[0].person.id;
+      const resultMovies = await fetchTMDBDiscoverMovies(actorID);
+      const relatedMovies = resultMovies.data.discoverMovies
+
+      let i = 0;
+      while (i < relatedMovies.length && relatedMovies[i].name !== name) 
+      { i++; }
+
+      if (i< relatedMovies.length) {
+        let movie = relatedMovies[0];
+        relatedMovies[0] = relatedMovies[i];
+        relatedMovies[i] = movie;
+      }
+
+      setMovies(relatedMovies);
+      setLoading(false);
+  }
+
   return (
-    <ListItem onClick={handleExtendListItem} key={id}>
+    <ListItem onClick={handleExtendListItem} key={movieID}>
       <Box>
         <Accordion sx={accordionStyle}>
           <AccordionSummary 
-            id={`${id}-panel`}
-            aria-controls={`${id}-header`}
+            id={`${movieID}-panel`}
+            aria-controls={`${movieID}-header`}
             expandIcon={
               <ExpandMoreIcon sx={expandIconStyle}/>
             }
@@ -177,6 +203,7 @@ export default function MovieListItem({id,name,score,releaseDate,img}) {
                 </Link> : ""
               } 
                   <Button 
+                    onClick={handleRelatedMoviesButton}
                     variant='contained'
                     color='error'
                     size='small'
