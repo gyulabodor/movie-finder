@@ -71,22 +71,24 @@ export default function MovieListItem({movieID,name,score,releaseDate,img}) {
       setWikiLink(`${wiki_article_url}=${pageId}`);
       setHasWiki(true);
     }
-
   }
 
   const setIMDBResult = async () => {
     const imdbResults = await fetchIMDB(name);
+    console.log(imdbResults)
     if('results' in imdbResults){
 
       let searchedYear = getYear(releaseDate);
       let i = 0;
       while (i < imdbResults.results.length && 
-        (imdbResults.results[i].title !== name || imdbResults.results[i].year !== searchedYear)) 
+        (imdbResults.results[i].title !== name || imdbResults.results[i].year !== searchedYear) 
+        && imdbResults.results[i].titleType !== "movie") 
         { i++; }
       
       let imdbId;
       if(i < imdbResults.results.length){
           imdbId = imdbResults.results[i].id;
+
           setImdbLink(`${imdb_url}${imdbId}`);
           setHasImdb(true);
       } 
