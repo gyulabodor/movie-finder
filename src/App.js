@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import MovieList from './components/MovieList/MovieList';
 import { SearchForm } from './components/SearchField/SearchForm';
-import { LoadingContext } from './utilities/Context';
+import { LoadingContext, MovieListContext } from './utilities/Context';
 import { Spinner } from "./components/Spinner/Spinner";
 
 
@@ -21,12 +21,14 @@ export default function App() {
 
   return (
     <LoadingContext.Provider value={{loading,setLoading}}>
-      <div className="App">
-        <Typography variant='h4'>Movie Finder</Typography>
-        <SearchForm handleClick={handleSearchClick}/>
-        <MovieList movies={movies}/>
-        { loading ? <Spinner isLoading={loading}/> : ""}
-      </div>
+      <MovieListContext.Provider value={{movies,setMovies}}>
+        <div className="App">
+          <Typography variant='h4'>Movie Finder</Typography>
+          <SearchForm handleClick={handleSearchClick}/>
+          <MovieList movies={movies}/>
+          { loading ? <Spinner isLoading={loading}/> : ""}
+        </div>
+      </MovieListContext.Provider>
     </LoadingContext.Provider>
   );
 }
