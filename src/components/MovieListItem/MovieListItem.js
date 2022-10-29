@@ -71,6 +71,9 @@ export default function MovieListItem({movieID,name,score,releaseDate,img}) {
       setWikiLink(`${wiki_article_url}=${pageId}`);
       setHasWiki(true);
     }
+    else{
+      setOverview("Couldn't get infromation about the summary!");
+    }
   }
 
   const setIMDBResult = async () => {
