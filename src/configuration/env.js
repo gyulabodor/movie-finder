@@ -5,4 +5,3 @@ export const imdb_url = process.env.REACT_APP_IMDB_URL;
 export const imdb_endpoint =process.env.REACT_APP_IMDB_RAPIDAPI_ENDPOINT;
 export const rapidapi_host = process.env.REACT_APP_IMDB_RAPIDAPI_HOST;
 export const rapidapi_key = process.env.REACT_APP_RAPIDAPI_KEY;
-

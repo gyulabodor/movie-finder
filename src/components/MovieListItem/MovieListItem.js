@@ -1,25 +1,23 @@
 import React, { useState, useContext } from 'react'
 import { 
-  avatarStyle, 
-  listItemTextStyle, 
+  avatarStyle,  
   listTyphoBodyStyle, 
-  movieTitleStyle,
   expandIconStyle,
   summaryBodyStyle,
   linkStyle,
   linkStackStyle,
-  accordionStyle
+  accordionStyle,
+  accordionStackStyle,
+  listItemStyle
 } from './style.js'
 import { 
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Avatar, 
-  Box, 
+  Avatar,
   ListItem, 
   ListItemAvatar, 
   ListItemIcon, 
-  ListItemText, 
   Typography,
   Link,
   Button,
@@ -32,7 +30,7 @@ import { imdb_url, wiki_article_url } from '../../configuration/env.js';
 import { fetchWikipedia } from '../../requests/fetchWikipedia.js';
 import { fetchIMDB } from '../../requests/fetchIMDB.js';
 import { getYear } from '../../utilities/getYear.js';
-import { LoadingContext, MovieListContext } from '../../utilities/Context.js';
+import { LoadingContext, MovieListContext, InfoContext } from '../../utilities/Context.js';
 import { fetchTMDBDiscoverMovies, fetchTMDBGetActorByMovie } from '../../requests/fetchTMDB.js';
 
 export default function MovieListItem({movieID,name,score,releaseDate,img}) {
@@ -45,6 +43,7 @@ export default function MovieListItem({movieID,name,score,releaseDate,img}) {
   const [hasExtended, setHasExtended] = useState(false);
   const {setMovies} = useContext(MovieListContext);
   const {setLoading} = useContext(LoadingContext);
+  const {setIsRelated} = useContext(InfoContext);
 
   const validateImg = (img) => {
     if(img !== null){
@@ -102,7 +101,6 @@ export default function MovieListItem({movieID,name,score,releaseDate,img}) {
         { i++; }
       
       let imdbId;
-      console.log(imdbResults.results[i].id + " i: " + i);
       if(i < imdbResults.results.length){
           imdbId = imdbResults.results[i].id;
           setImdbLink(`${imdb_url}${imdbId}`);
@@ -138,12 +136,16 @@ export default function MovieListItem({movieID,name,score,releaseDate,img}) {
         relatedMovies[i] = movie;
       }
       setMovies(relatedMovies);
+      setIsRelated(true);
       setLoading(false);
   }
 
   return (
-    <ListItem onClick={handleExtendListItem} key={movieID}>
-      <Box>
+    <ListItem 
+      onClick={handleExtendListItem} 
+      key={movieID}
+      sx={listItemStyle}
+    >
         <Accordion sx={accordionStyle}>
           <AccordionSummary 
             id={`${movieID}-panel`}
@@ -161,29 +163,25 @@ export default function MovieListItem({movieID,name,score,releaseDate,img}) {
                 />
               </ListItemAvatar>
             </ListItemIcon>
-            <ListItemText 
-              primary={
-                <>
-                  <Typography sx={movieTitleStyle}>{name}</Typography>
-                </>
-              }
-              secondary={
-                <>
-                  <Typography 
-                    sx={listTyphoBodyStyle} 
-                    variant='body2'>
-                      Score: {score}
-                  </Typography>
-                  <Typography 
-                    sx={listTyphoBodyStyle} 
-                    variant='body2'>
-                      Release: {validateReleaseDate(releaseDate)}
-                  </Typography>
-                </>
-              }
-              sx={listItemTextStyle}  
-            />
-          
+            <Stack 
+              direction="column"
+              sx={accordionStackStyle}
+            >
+              <Typography 
+                variant='h5'>
+                {name}
+              </Typography>
+              <Typography 
+                sx={listTyphoBodyStyle} 
+                variant='body2'>
+                Score: {score}
+              </Typography>
+              <Typography 
+                sx={listTyphoBodyStyle} 
+                variant='body2'>
+                Release: {validateReleaseDate(releaseDate)}
+              </Typography>
+            </Stack>
           </AccordionSummary>
           <AccordionDetails>
               <Typography
@@ -230,7 +228,6 @@ export default function MovieListItem({movieID,name,score,releaseDate,img}) {
               </Stack>
           </AccordionDetails>
         </Accordion>
-      </Box>
     </ListItem>
   )
 }

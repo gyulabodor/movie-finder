@@ -3,22 +3,25 @@ import { useContext, useState } from "react"
 import LocationSearchingOutlinedIcon from '@mui/icons-material/LocationSearchingOutlined';
 import { Stack } from "@mui/system";
 import { fetchTMDBSearchMovie } from "../../requests/fetchTMDB";
-import { LoadingContext, MovieListContext } from "../../utilities/Context";
+import {  MovieListContext, InfoContext, LoadingContext } from "../../utilities/Context";
 
 
 export const SearchForm = () => {
     
     const [searchTitle,setSearchTitle] = useState("");
-    const {setLoading} = useContext(LoadingContext);
+    const {setLoading} = useContext(LoadingContext)
     const {setMovies} = useContext(MovieListContext);
-    
+    const {setIsRelated,setSearched} = useContext(InfoContext);
+
     const submitSearch = async () => {
         if (searchTitle !== "") {
             setLoading(true);
             const resultArray = await fetchTMDBSearchMovie(searchTitle);
             setMovies(resultArray.data.searchMovies);
             setLoading(false);
-            setSearchTitle("");    
+            setSearchTitle("");
+            setIsRelated(false);
+            setSearched(true);
         }
     }
 
