@@ -1,12 +1,12 @@
 export const movieListStyle = {
     borderRadius: '7px',
-    color: '#ffff',
+    display:'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    justifyContect: 'center',
     alignItems: 'center',
-    width: '420px'
 }
-export const infoBoxStyle = {
-    marginTop: '20px',
-    backgroundColor: '#525e5e',
-    borderRadius: '7px',
-    textAlign:'center'
+
+export const infoMessageStyle = {
+    marginTop: '15px'
 }

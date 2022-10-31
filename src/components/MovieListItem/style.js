@@ -1,14 +1,19 @@
+export const listItemStyle = {
+    minWidth: '420px',
+    maxWidth: '680px',
+    margin: '5px auto'
+}
 export const accordionStyle ={
     backgroundColor: '#525e5e',
     borderRadius: '7px',
     color: '#ffff',
     alignItems: 'center',
-    width: '420px',
+    width: '680px'
 }
 export const avatarStyle = {
     backgroundColor: '#e69429',
-    height: '100px',
-    width: '100px'
+    height: '110px',
+    width: '110px'
 }
 export const listItemTextStyle = {
     color: '#ffff',
@@ -16,9 +21,6 @@ export const listItemTextStyle = {
 }
 export const listTyphoBodyStyle = {
     color: '#ffff',
-}
-export const movieTitleStyle = {
-    fontSize: '20px',
 }
 export const expandIconStyle = {
     color: '#ffff'
@@ -32,4 +34,7 @@ export const linkStyle = {
 }
 export const linkStackStyle = {
     padding: '5px'
+}
+export const accordionStackStyle = {
+    padding: '8px'
 }

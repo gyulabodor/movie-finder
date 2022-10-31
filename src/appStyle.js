@@ -6,5 +6,8 @@ export const appStackStyle = {
     background: '#fff5f0',
     borderRadius: '10px',
     boxShadow:'0px 3px 3px 3px rgba(0,0,0,.2)',
-    fontFamily: `'Roboto Slab', 'serif'`
+}
+export const appTitleStyle = {
+    padding: '15px',
+    color: '#525e5e'
 }
