@@ -43,8 +43,8 @@ export default function MovieListItem({movieID,name,score,releaseDate,img}) {
   const [hasImdb,setHasImdb] = useState(false);
   const [imdbLink,setImdbLink] = useState("");
   const [hasExtended, setHasExtended] = useState(false);
-  const {movies,setMovies} = useContext(MovieListContext);
-  const {loading,setLoading} = useContext(LoadingContext);
+  const {setMovies} = useContext(MovieListContext);
+  const {setLoading} = useContext(LoadingContext);
 
   const validateImg = (img) => {
     if(img !== null){
@@ -62,36 +62,49 @@ export default function MovieListItem({movieID,name,score,releaseDate,img}) {
     return "unknown";
   } 
 
+  const validateWikiResult = (wikiExtract, pageId) => {
+
+      if (pageId === "-1") {
+        return false;
+      }
+      if (wikiExtract.includes("may refer to") || wikiExtract.includes("may also refer to")){
+        return false
+      }
+      return true;
+  }
   const setWikiResult = async () => {
+    setLoading(true);
     const page = await fetchWikipedia(name);
     const pageId = Object.keys(page)[0];
+    const wikiExtract = page[`${pageId}`].extract;
     
-    if (pageId !== "-1") {
-      setOverview(page[`${pageId}`].extract);
+    if (validateWikiResult(wikiExtract,pageId)) 
+    {
+      setOverview(wikiExtract);
       setWikiLink(`${wiki_article_url}=${pageId}`);
       setHasWiki(true);
     }
     else{
       setOverview("Couldn't get infromation about the summary!");
     }
+    setLoading(false)
   }
 
   const setIMDBResult = async () => {
     const imdbResults = await fetchIMDB(name);
-    console.log(imdbResults)
     if('results' in imdbResults){
 
       let searchedYear = getYear(releaseDate);
       let i = 0;
       while (i < imdbResults.results.length && 
-        (imdbResults.results[i].title !== name || imdbResults.results[i].year !== searchedYear) 
-        && imdbResults.results[i].titleType !== "movie") 
+       ( imdbResults.results[i].title !== name || imdbResults.results[i].year !== searchedYear 
+        || imdbResults.results[i].titleType !== "movie")) 
         { i++; }
       
       let imdbId;
+      console.log(imdbResults.results[i].id + " i: " + i);
       if(i < imdbResults.results.length){
           imdbId = imdbResults.results[i].id;
-
           setImdbLink(`${imdb_url}${imdbId}`);
           setHasImdb(true);
       } 
@@ -124,7 +137,6 @@ export default function MovieListItem({movieID,name,score,releaseDate,img}) {
         relatedMovies[0] = relatedMovies[i];
         relatedMovies[i] = movie;
       }
-
       setMovies(relatedMovies);
       setLoading(false);
   }

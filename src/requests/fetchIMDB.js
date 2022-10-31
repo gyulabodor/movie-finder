@@ -2,8 +2,8 @@ import { imdb_endpoint, rapidapi_host, rapidapi_key } from "../configuration/env
 
 export const fetchIMDB = async (title) => {
 
-    const url = `${imdb_endpoint}=${title.replaceAll(' ', '%')}`;
-    console.log(url)
+    const url = `${imdb_endpoint}=${title.replaceAll(' ', '+')}`;
+
     const response = await fetch(url,  {
         method: 'GET',
         headers: { 

@@ -14,7 +14,6 @@ export const fetchWikipedia = async (name) => {
         redirects: true,
     });
 
-
     const response = await fetch(wikipedia_url+params.toString());
 
     if (!response.ok) {
@@ -24,3 +23,4 @@ export const fetchWikipedia = async (name) => {
     const data = await response.json();
     return data.query.pages;
 }
+
