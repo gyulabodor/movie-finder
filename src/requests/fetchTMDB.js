@@ -1,9 +1,7 @@
 import { tmdb_url } from "../configuration/env";
 
-
-export const fetchTMDBSearchMovie = async (title)  => {
-
-    const query = `
+export const fetchTMDBSearchMovie = async (title) => {
+  const query = `
         query SearchMovies {
             searchMovies(query: "${title}") {
                 id
@@ -16,23 +14,22 @@ export const fetchTMDBSearchMovie = async (title)  => {
                 }
             }
         }`;
-   const response = await fetch(tmdb_url,  {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({query: query}),
-    })
+  const response = await fetch(tmdb_url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query: query }),
+  });
 
-    if (!response.ok) {
-		throw new Error(`HTTP error status: ${response.status}`);
-	}
+  if (!response.ok) {
+    throw new Error(`HTTP error status: ${response.status}`);
+  }
 
-    const data = await response.json();
-    return data;
-}
-
+  const data = await response.json();
+  return data;
+};
 
 export const fetchTMDBDiscoverMovies = async (actorID) => {
-    const query = `
+  const query = `
         query DiscoverMovies {
             discoverMovies(filter: { withCast: { include: [${actorID}] } }) {
                 id
@@ -45,24 +42,22 @@ export const fetchTMDBDiscoverMovies = async (actorID) => {
                 }
         }`;
 
-    const response = await fetch(tmdb_url,  {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({query: query}),
-    })
+  const response = await fetch(tmdb_url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query: query }),
+  });
 
-    if (!response.ok) {
-		throw new Error(`HTTP error status: ${response.status}`);
-	}
+  if (!response.ok) {
+    throw new Error(`HTTP error status: ${response.status}`);
+  }
 
-    const data = await response.json();
-    return data;
-}
-
+  const data = await response.json();
+  return data;
+};
 
 export const fetchTMDBGetActorByMovie = async (movieID) => {
-
-    const query = `
+  const query = `
         query getMovie {
             movie(id: ${movieID}) {
                 cast(limit: 1) {
@@ -73,16 +68,16 @@ export const fetchTMDBGetActorByMovie = async (movieID) => {
                 }
             }
         }`;
-    const response = await fetch(tmdb_url,  {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({query: query}),
-    })
-            
-    if (!response.ok) {
-        throw new Error(`HTTP error status: ${response.status}`);
-    }
-            
-    const data = await response.json();
-    return data;            
-}
+  const response = await fetch(tmdb_url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query: query }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data;
+};

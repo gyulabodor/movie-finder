@@ -19,7 +19,7 @@ export const SearchForm = () => {
     if (e.key === "Enter") {
       submitSearch();
     }
-  }
+  };
 
   const submitSearch = async () => {
     if (searchTitle !== "") {
@@ -30,8 +30,7 @@ export const SearchForm = () => {
       setIsRelated(false);
       setSearched(true);
       setLoading(false);
-    }
-    else{
+    } else {
       setLoading(true);
       setMovies([]);
       setSearchTitle("");
