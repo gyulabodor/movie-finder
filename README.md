@@ -59,7 +59,7 @@ I used `fetch()` for all the API calls.
 - I wasn't sure that you would like me to get the external IMDB link from the movie's wikipedia page and as I saw a lot of articles don't have IMDB urls, so I decided to choose the way to use IMDB api, I registered to rapidapi.com and took it from there.
  - `fetchIMDB()` for getting a list of movies with their details by the given title.
 
-## Related 
+## Related search
 ### How does it works:
 - On `Related Movies` button click it start fetching TMDB with the given `movieID` to get the actors list who play in the movie, I decided to choose the first actor's ID from the result I got, so we will got movies related to that first actor. So I start a new TMBD fetch by that 1 actor's ID and get all the movies He/She plays in and then re-render the list.
 
