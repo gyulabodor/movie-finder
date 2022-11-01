@@ -1,70 +1,69 @@
-# Getting Started with Create React App
+# Movie Finder
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## UI & Design:
+### I used Material UI components for building the application's UI.
+For changing the default styles I created *"style.js"* beside every components whiches including JS objects with CSS key-value pairs.
+I gave these objects to the MUI components' *"sx={}"* attributes.
 
-In the project directory, you can run:
+In one case I used *ThemeProvider* and *createTheme()*, for changing the font-family for the whole project. 
+There's only 1 css file *"index.css"* where I only defined the body's padding and margin, and the box-sizing for the whole document.
 
-### `npm start`
+## Components:
+### There are 5 components that are managing the app.
+**App component** 
+- Contains and wrappes all the components and global states whiches can be managed via *ContextProviders* and *useContext()* hooks.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+**SearchField component**
+- Renders and manages the input textbox and search button, TMBD searchMovies request takes place here.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+**MovieList component**
+- Renders the given list of movies and manages and renders informations about the search type (simple/related).
 
-### `npm test`
+**MovieListItem component**
+- Renders, manages and validates the details of one movie.
+    - Wikipedia request and result validation
+    - IMDB request and result validation
+    - Realted search feature and process
+    take places here.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**Spinner component**
+- Renders a spinner on the given boolean
 
-### `npm run build`
+## Contexts
+### There are 3 contexts that helps to reach and manage global states
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**MovieListContext**
+- For managing the global *movies* state to change list of movie which will rendered on when it's changing.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**InfoContext**
+- For managing the global *isRelated* and *searched* state to change the    information message about the search type.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**LoadingContext**
+- For managing the global *isLoading* state to turn ON/OFF the Spinner.
 
-### `npm run eject`
+## APIs
+### I used 3 different APIs
+I used only *fetch()* for all the API calls.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**TMDB**
+- There are 3 different requests:
+ - *searchMovies()* for getting a list of movies with their details by the given title.
+ - *fetchTMDBGetActorByMovie()* used for realted search, it is getting the Actor's id who is casting in the given movie.  
+ - *fetchTMDBDiscoverMovies()* used for getting the movies related to the given actor.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**WIKIPEDIA**
+- There's 1 request:
+ - *fetchWikipedia()* - for getting a list of pages with the given name.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+**IMDB**
+- I wasn't sure that you would like me to get the external IMDB link from the movie's wikipedia page and as I saw a lot of articles don't have IMDB urls, so I decided to choose the way to use IMDB api, I registered to rapidapi.com and took it from there.
+ - *fetchIMDB()* for getting a list of movies with their details by the given title.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+### Known weakness/issue
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Fetching english wikipedia was the most difficult part of the exercise I think, the only way I could solve this task is to put together those search parameters as I did. 
+For popular movies and for not tha populars (which don't have any article) my fetch() is working great, but in some cases We got wrong articles, I tried different ways to handle this problem, search for categories etc.. but I found that It would be a really hard and complex to fix this. And I really would like to send my homework.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Thank you for exercise, It was a great fun! 
